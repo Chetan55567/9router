@@ -14,4 +14,12 @@ describe("stream policy", () => {
   it("does not force non-streaming for other formats/endpoints", () => {
     expect(shouldForceNonStreamingForResponsesTool(FORMATS.OPENAI, "/v1/chat/completions")).toBe(false);
   });
+
+  it("does not force non-streaming when endpoint is not provided", () => {
+    expect(shouldForceNonStreamingForResponsesTool(FORMATS.OPENAI)).toBe(false);
+  });
+
+  it("normalizes endpoint path before matching", () => {
+    expect(shouldForceNonStreamingForResponsesTool(FORMATS.OPENAI, "///v1//responses///?x=1")).toBe(true);
+  });
 });
